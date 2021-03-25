@@ -53,7 +53,7 @@ python_version=$(asdf list all python|rg "^[\d\.]+$"|tail -1) &&\
 asdf install python $python_version &&\
 asdf global python $python_version &&\
 pip config set global.index-url https://mirrors.aliyun.com/pypi/simple &&\
-pip install ipython xonsh virtualenv &&\
+pip install ipython xonsh virtualenv pynvim &&\
 asdf plugin add nodejs &&\
 ~/.asdf/plugins/nodejs/bin/import-release-team-keyring &&\
 nodejs_version=$(asdf list all nodejs|tail -1)&&\
