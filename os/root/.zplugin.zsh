@@ -1,6 +1,8 @@
 source ~/.zplugin/bin/zplugin.zsh
 
-[ -r "~/.cache/p10k-instant-prompt-${(%):-%n}.zsh" ] && source "~/.cache/p10k-instant-prompt-${(%):-%n}.zsh"
+if [[ -r "~/.cache/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "~/.cache/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
 
 zinit ice depth=1
 zinit light romkatv/powerlevel10k
@@ -37,5 +39,10 @@ zinit light tj/git-extras
 bindkey "^A" vi-beginning-of-line
 bindkey "^E" vi-end-of-line
 
+zinit ice as"program" make'!' atclone'./direnv hook zsh > zhook.zsh' \
+    atpull'%atclone' src"zhook.zsh"
+zinit light direnv/direnv
 
+zinit ice from"gh-r" as"program" mv"direnv* -> direnv"
+zinit light direnv/direnv
 
