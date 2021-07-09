@@ -2,32 +2,37 @@
 "
 " 插件管理
 " neovim 首先执行下面的命令安装
-" 安装命令 
-" nvim +'call dein#install()' 
+" 安装命令
+" nvim +'call dein#install()'
 """""""""""""""""""""""""""""""""""""""
 "filetype off                  " required
 
 set runtimepath+=/etc/vim/repos/github.com/Shougo/dein.vim
 
+au BufRead,BufNewFile *.styl set filetype=stylus
+
+
 if dein#load_state('/etc/vim/dein')
   let g:dein#types#git#clone_depth = 1
 
+  call dein#add('tomtom/tcomment_vim') " 批量注释
   call dein#begin('/etc/vim/dein')
+  call dein#add('/etc/vim/repos/github.com/Shougo/dein.vim')
   call dein#add('direnv/direnv.vim')
-  call dein#add('/etc/vim/dein/repos/github.com/Shougo/dein.vim')
+  call dein#add('rust-lang/rust.vim')
   call dein#add('Shougo/deoplete.nvim')
   call dein#add('neoclide/coc.nvim', {'merged':0, 'rev': 'release'})
-  call dein#add('tomtom/tcomment_vim') " 批量注释
   call dein#add('Chiel92/vim-autoformat')
-  call dein#add('codota/tabnine-vim')
   call dein#add('ekalinin/Dockerfile.vim')
   call dein#add('cespare/vim-toml',{'on_ft':'toml'})
   call dein#add('ctrlpvim/ctrlp.vim')                  " 根据文件名和文件内容模糊搜索并打开文件
   call dein#add('dart-lang/dart-vim-plugin')
-  call dein#add('digitaltoad/vim-pug',{'on_ft':['vue','pug']})
+  call dein#add('codota/tabnine-vim')
+  call dein#add('digitaltoad/vim-pug',{'on_ft':['pug','vue']})
   call dein#add('dyng/ctrlsf.vim')                           " 快速打开文件
   call dein#add('ervandew/supertab')                         " supertab 补全
   call dein#add('gkz/vim-ls',{'on_ft':'ls'}) " live script 语法高亮
+  call dein#add('posva/vim-vue',{'on_ft':['vue','styl','stylus']})
   call dein#add('godlygeek/tabular')                         " 自动对齐
   call dein#add('haya14busa/vim-gtrans',{'on_ft':'markdown'})
   call dein#add('iloginow/vim-stylus')
@@ -36,7 +41,6 @@ if dein#load_state('/etc/vim/dein')
   call dein#add('meatballs/vim-xonsh')
   call dein#add('luochen1990/rainbow')                       " 彩虹括号，匹配的括号显示为同一颜色
   call dein#add('maksimr/vim-jsbeautify',{'on_ft':'js'})
-  call dein#add('posva/vim-vue',{'on_ft':['vue','styl','stylus']})
   call dein#add('scrooloose/nerdtree')                       " 文件浏览
   call dein#add('urwork/ack.vim')                            " ag插件
   call dein#add('urwork/vim-indent-guides')
@@ -50,7 +54,7 @@ if dein#load_state('/etc/vim/dein')
 endif
 
 "
-" call vundle#begin() 
+" call vundle#begin()
 " call vundle#end()
 " call plug#begin('/etc/vim/runtime/plug')
 " Plug 'Valloric/YouCompleteMe'                " 自动补全
@@ -84,6 +88,7 @@ autocmd FileType html set commentstring=#\ %s
 autocmd FileType coffee set commentstring=#\ %s
 autocmd FileType sh set commentstring=#\ %s
 autocmd FileType conf set commentstring=#\ %s
+autocmd FileType rust set commentstring=//\ %s
 
 if executable('ag')
   let g:ackprg = 'ag --vimgrep'
@@ -110,55 +115,60 @@ let g:ale_fix_on_save = 1
 "            自定义函数
 "
 """""""""""""""""""""""""""""""""""""""
-"定义 FormatRun()
 func RunPy2InPy3()
     call system("2to3-3.9 --fix=print --nobackups" . expand('%') . " -w &> /dev/null")
     exec ":e %"
-    exec "!direnv exec $(dirname %) python %"
+    exec "!python3 %"
 endfunc
 
-"定义 FormatRun()
 func FormatRun()
+  if &buftype == "terminal"
+    call nvim_input('ii')
+  else
     exec "w"
+    exec "vsp"
+    exec "wincmd l"
+    exec "set nonu"
+    if &filetype == 'coffee'
+      exec "term coffee %"
+    endif
     "运行python
     if &filetype == 'html'
-        call HtmlBeautify()
+      call HtmlBeautify()
     endif
     if &filetype == 'py'||&filetype == 'python'
-        call RunPy2InPy3()
+      call RunPy2InPy3()
     endif
     if &filetype == 'xonsh'
-        exec "!xonsh %"
+      exec "term xonsh %"
     endif
     if &filetype == 'ls'
-        exec "!node -r livescript-transform-implicit-async/register %"
+      exec "term node -r livescript-transform-implicit-async/register %"
     endif
     if &filetype == 'go'
-        exec "!qrun %"
-    endif
-    if &filetype == 'coffee'
-        exec "!direnv exec $(dirname %) coffee %"
+      exec "term qrun %"
     endif
     if &filetype == 'sh'
-        exec "!bash %"
+      exec "term bash %"
     endif
     if &filetype == 'js'||&filetype == 'javascript'
-        exec "!node %"
+      exec "term node %"
     endif
+  endif
 endfunc
-"结束定义FormatRun
 
+"定义FormartSrc()
 func FormartSrc()
     exec "w"
     if &filetype == 'stylus'
       exec "silent !stylus-supremacy format % --options ~/.config/supremacy.yaml --outDir $(dirname %s)"
     elseif &filetype == 'xml'
-      exec "silent !astyle --style=gnu --suffix=none %"
+        exec "silent !astyle --style=gnu --suffix=none %"
     endif
     exec "e! %"
 endfunc
+"结束定义FormartSrc
 
-autocmd BufWritePre *.styl :call FormartSrc()
 
 """""""""""""""""""""""""""""""""""""""
 "
@@ -171,7 +181,6 @@ set encoding=utf-8
 set termencoding=utf-8
 set fileencoding=utf-8
 set nocompatible
-set backspace=2
 set number              "左侧显示行号
 "set ruler               "底部显示行列号
 set expandtab
@@ -184,8 +193,8 @@ set wildmenu            "命令行模式按tab补全命令
 set fdm=indent
 filetype indent on
 "python文件模板
-autocmd BufNewFile *.vue 0r /etc/vim/bundle/template/vim.vue
 autocmd BufNewFile *.py 0r /etc/vim/bundle/template/vim.py
+autocmd BufNewFile *.vue 0r /etc/vim/bundle/template/vim.vue
 autocmd BufNewFile *.ls 0r /etc/vim/bundle/template/vim.ls
 autocmd BufNewFile *.coffee 0r /etc/vim/bundle/template/vim.coffee
 retab
@@ -283,7 +292,7 @@ let g:autopep8_disable_show_diff=1
 hi Boolean ctermfg=141
 hi Character ctermfg=222
 hi ColorColumn ctermbg=236
-hi Conditional ctermfg=64 
+hi Conditional ctermfg=64
 hi Constant ctermfg=121 cterm=bold
 hi Cursor ctermfg=16 ctermbg=253
 hi CursorColumn ctermbg=236
@@ -376,7 +385,7 @@ set lazyredraw
 "解决组合快捷键导致某些快捷键变卡的问题
 "例如如果map了np, 就会导致搜索n有一个很长的反应时间
 set timeoutlen=200
-map <F12> :call FormatRun()<CR>
+nmap <F12> :call FormatRun()<CR>
 "map <F10> :SyntasticCheck pyflakes<CR>
 "map <F9> :SyntasticCheck python<CR>
 "map <F8> :res-1<CR>
@@ -393,15 +402,6 @@ let g:ctrlsf_auto_focus = {
     \ "at": "done",
     \ "duration_less_than": 1000
     \ }
-nmap ag :AG <C-R><C-W><CR>
-nmap ss :CtrlSF <C-R><C-W><CR>
-vnoremap ss y:CtrlSF <C-R>"<CR>
-vnoremap <Tab> :Tab /
-vnoremap <Tab>: :Tab /:<CR>
-vnoremap <Tab>, :Tab /,<CR>
-vnoremap <Tab>= :Tab /=<CR>
-vnoremap <Backspace> :TComment <CR>
-vnoremap <c-f> y<ESC>/<c-r>"<CR>   
 
 nmap tt :NERDTreeToggle<cr>
 nmap mr :MRU<cr>
@@ -412,20 +412,25 @@ nmap mr :MRU<cr>
 "nmap pe :lprev<cr>
 
 
+autocmd BufWritePre *.styl :call FormartSrc()
+
+
 autocmd BufWritePre *.py :%s/^\(\s*print\)\s\+\(.*\)/\1(\2)/e
-autocmd BufWritePre *.{vue,ls,cpp,c,d,slm,py,coffee,conf,html,sh,scss,css,js,pug,xsh} :%s/\t/  /ge
-autocmd BufWritePre *.{zsh,txt,cpp,c,d,slm,yml,py,coffee,conf,html,sh,scss,css,js,vue,sass,pug,xsh} :%s/\s\+$//e
-au BufWritePre *.{proto,json,go,js,html,scss,css} :Autoformat
+autocmd BufWritePre *.{md,vue,ls,cpp,c,d,slm,py,coffee,conf,html,sh,scss,css,js,pug,xsh,styl,dart} :%s/\t/  /ge
+autocmd BufWritePre *.{md,zsh,txt,cpp,c,d,slm,py,coffee,conf,html,sh,scss,css,js,vue,sass,pug,xsh,styl,dart} :%s/\s\+$//e
+au BufWritePre *.{py,proto,json,go,js,html,scss,css,dart} :Autoformat
 autocmd FileType vue syntax sync fromstart
 autocmd BufWritePre *.vue :syntax sync fromstart
 
 
 let g:syntastic_swift_checkers = ['swiftpm', 'swiftlint']
+let g:vue_pre_processors = ['pug','coffee','stylus','styl']
 
 set backupcopy=yes
 set nofoldenable
 set viminfo='100,<10000,s1000,h
 
+let html_no_rendering=1
 
 let g:indent_guides_start_level=2
 let g:indent_guides_guide_size=1
@@ -434,6 +439,21 @@ let g:go_metalinter_command="golangci-lint"
 set ts=2 sw=2 expandtab softtabstop=2
 autocmd FileType python setlocal et sta sw=2 sts=2
 autocmd FileType xonsh setlocal et sta sw=2 sts=2
+
 let g:formatdef_gopfmt = '"gop fmt"'
 let g:formatters_go= ['gopfmt']
+let g:rustfmt_autosave = 1
+let g:rust_recommended_style = 0
+let g:rustfmt_options='--config-path ~/.config/rustfmt/rustfmt.toml'
 
+nmap ag :AG <C-R><C-W><CR>
+nmap ss :CtrlSF <C-R><C-W><CR>
+vnoremap ss y:CtrlSF <C-R>"<CR>
+"vnoremap <Tab> :Tab /
+vnoremap <Tab>: :Tab /:<CR>
+vnoremap <Tab>, :Tab /,<CR>
+vnoremap <Tab>= :Tab /=<CR>
+vnoremap <c-f> y<ESC>/<c-r>"<CR>
+
+set backspace=2
+vnoremap <Tab> :'<,'>TComment <CR>
