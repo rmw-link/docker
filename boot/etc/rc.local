@@ -29,7 +29,7 @@ mkdir -p /var/log/supervisor
 # mkdir -p /var/log/redis
 # chown redis:redis /var/log/redis
 
-rsync -avu /.sync/ / > /dev/null
+#rsync -avu /.sync/ / > /dev/null
 mkdir -p /var/run/sshd
 
 chmod 700 /root/.ssh
