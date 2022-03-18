@@ -1,0 +1,48 @@
+<%
+image=CONFIG.IMAGE
+image_id=image.replace("/","-")
+docker="/mnt/data/docker/%s"%image_id
+tmp="/tmp/docker/"+image_id
+%>
+version: '3.7'
+services:
+% for user,port in CONFIG.USER :
+<%
+port = port * 100
+docker_user = "%s/user/%s"%(docker, user)
+user_disk = "%s/_"%docker_user
+%>
+  ${image_id}-${user}:
+    container_name : ${image_id}-${user}
+    hostname : ${image_id}-${user}
+    image: ${image}
+    privileged: true
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    restart: unless-stopped
+    cap_add:
+      - SYS_PTRACE
+    ports:
+      - "${30000+port}:22"
+      - "${30008+port}:80"
+      - "${30010+port}-${30015+port}:30010-30015"
+    volumes:
+      - ${docker_user}/ssh/etc/ssh/host:/etc/ssh/host
+      - ${docker_user}/ssh/root/.ssh:/root/.ssh
+      - ${user_disk}/etc/rc.d:/etc/rc.d
+      - ${user_disk}/etc/supervisor.d:/etc/supervisor.d
+      - ${user_disk}/home:/home
+      - ${user_disk}/root:/root
+      - ${docker}/share:/share
+      - ${tmp}/user/${user}/tmp:/tmp
+      - ${tmp}/user/${user}/log:/var/log
+      - /etc/nginx/conf.d/${image_id}/${user}:/etc/nginx/conf.d
+    networks:
+      - ${image_id}
+    device_requests:
+      - capabilities:
+        - "gpu"
+
+% endfor
+networks:
+  ${image_id}:

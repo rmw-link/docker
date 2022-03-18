@@ -1,0 +1,22 @@
+[Unit]
+Description=Podman container-httpd.service
+Documentation=man:podman-generate-systemd(1)
+Wants=network-online.target
+After=network-online.target
+RequiresMountsFor=%t/containers
+
+[Service]
+User=ubuntu
+Group=ubuntu
+Environment=PODMAN_SYSTEMD_UNIT=%n
+Restart=on-failure
+TimeoutStopSec=70
+WorkingDirectory=/home/ubuntu/rmw
+ExecRestart=/usr/local/bin/podman-compose restart
+ExecStart=/usr/local/bin/podman-compose start -d
+ExecStop=/usr/local/bin/podman-compose stop
+Type=notify
+NotifyAccess=all
+
+[Install]
+WantedBy=multi-user.target default.target

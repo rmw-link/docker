@@ -1,0 +1,47 @@
+#!/bin/bash -e
+
+ldconfig
+
+SSH_HOST_DIR=/etc/ssh/host
+mkdir -p  $SSH_HOST_DIR
+keygen () {
+NAME=ssh_host_$1_key
+FILE=$SSH_HOST_DIR/$NAME
+if [ ! -f "$FILE" ]; then
+ssh-keygen -t $1 -P "" -f $FILE
+rm -rf /etc/ssh/$NAME
+rm -rf /etc/ssh/$NAME.pub
+fi
+}
+keygen rsa
+keygen ecdsa
+keygen ed25519
+ln -s $SSH_HOST_DIR/* /etc/ssh/
+
+mkdir -p /var/log/supervisor
+#mkdir -p /var/log/nginx
+# mkdir -p /var/log/nullmailer
+#chown nullmail /var/log/nullmailer
+
+# mkdir -p /var/log/portage/elog
+# mkdir -p /var/log/sandbox
+
+# mkdir -p /var/log/redis
+# chown redis:redis /var/log/redis
+
+rsync -avu /.sync/ / > /dev/null
+mkdir -p /var/run/sshd
+
+chmod 700 /root/.ssh
+chmod 600 /root/.ssh/*
+# chmod 644 /root/.ssh/authorized_keys
+# chmod 644 /root/.ssh/known_hosts
+# chmod 644 /root/.ssh/*.pub > /dev/null 2>&1
+# chmod 755 /root/.ssh
+
+source /root/.asdf/asdf.sh
+rcLocal=$(cat /etc/rc.local.init)
+mv /etc/rc.local.init /etc/rc.local
+chmod 777 /tmp
+updatedb > /dev/null 2>&1 &
+sh -c "$rcLocal"
