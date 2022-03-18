@@ -104,6 +104,8 @@ COPY boot .
 
 #RUN mv /root /.sync/
 
+RUN rm -rf /tmp
+
 FROM ubuntu
 RUN rm -rf /root
 COPY --from=build / /
