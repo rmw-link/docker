@@ -107,6 +107,6 @@ RUN mv /root /.sync/
 
 FROM ubuntu
 RUN rm -rf /root
-COPY --from=build .
+COPY --from=build / /
 
 CMD ["/etc/rc.local"]
