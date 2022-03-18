@@ -9,13 +9,12 @@ NAME=ssh_host_$1_key
 FILE=$SSH_HOST_DIR/$NAME
 if [ ! -f "$FILE" ]; then
 ssh-keygen -t $1 -P "" -f $FILE
-rm -rf /etc/ssh/$NAME
-rm -rf /etc/ssh/$NAME.pub
 fi
 }
 keygen rsa
 keygen ecdsa
 keygen ed25519
+rm -rf /etc/ssh/ssh_host_*
 ln -s $SSH_HOST_DIR/* /etc/ssh/
 
 mkdir -p /var/log/supervisor
