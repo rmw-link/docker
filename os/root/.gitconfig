@@ -11,7 +11,7 @@ pager = diff-so-fancy | less --tabs=4 -RFX
 [alias]
 st = status
 rpull = !git pull $1 && git submodule foreach --recursive \"git pull origin master --recurse-submodules\"
-rinit = !git submodule update --init --recursive
+rinit = !git submodule update --init --recursive --progress
 ri = rinit
 rp = rpull
 diffs = diff --staged
