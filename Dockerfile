@@ -18,7 +18,7 @@ RUN sed -i 's/archive.ubuntu.com/mirrors.163.com/g' /etc/apt/sources.list &&\
 apt-get update &&\
 ln -snf /usr/share/zoneinfo/$TZ /etc/localtime &&\
 echo $TZ > /etc/timezone &&\
-apt-get install -y zlib1g-dev tzdata python3 sudo curl wget python3-pip tmux openssh-client openssh-server zsh language-pack-zh-hans rsync mlocate git g++ python3-dev gist less util-linux apt-utils ctags htop tree cron python-dev libpq-dev postgresql-client bsdmainutils libssl-dev libreadline-dev libbz2-dev libsqlite3-dev libffi-dev liblzma-dev direnv iputils-ping dstat software-properties-common zstd pixz jq git-extras aptitude clang-format p7zip-full &&\
+apt-get install -y zlib1g-dev tzdata python3 sudo curl wget python3-pip tmux openssh-client openssh-server zsh language-pack-zh-hans rsync mlocate git g++ python3-dev gist less util-linux apt-utils ctags htop tree cron python-dev libpq-dev postgresql-client bsdmainutils libssl-dev libreadline-dev libbz2-dev libsqlite3-dev libffi-dev liblzma-dev direnv iputils-ping dstat software-properties-common zstd pixz jq git-extras aptitude clang-format p7zip-full cmake &&\
 locale-gen zh_CN.UTF-8 &&\
 rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* &&\
 passwd -d root &&\
@@ -27,6 +27,8 @@ pip3 install glances yapf pylint supervisor python-language-server &&\
 add-apt-repository -y ppa:neovim-ppa/unstable &&\
 apt-get update &&\
 apt-get install -y neovim &&\
+update-alternatives --install /usr/bin/python python /usr/bin/python3 1 &&\
+update-alternatives --set python /usr/bin/python3 &&\
 update-alternatives --install /usr/bin/vi vi /usr/bin/nvim 1 &&\
 update-alternatives --set vi /usr/bin/nvim &&\
 update-alternatives --install /usr/bin/vim vim /usr/bin/nvim 1 &&\

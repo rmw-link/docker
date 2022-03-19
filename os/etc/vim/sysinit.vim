@@ -1,7 +1,6 @@
 " 安装 vi +PlugInstall +qall
 source /etc/vim/plug.vim
 call plug#begin('/etc/vim/plug')
-Plug 'tabnine/YouCompleteMe'
 Plug 'jacoborus/tender.vim'
 Plug 'yegappan/mru'        " 最近打开过的文件
 Plug 'tomtom/tcomment_vim' " 批量注释
