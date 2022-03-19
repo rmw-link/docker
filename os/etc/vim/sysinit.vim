@@ -1,6 +1,7 @@
 " 安装 vi +PlugInstall +qall
 source /etc/vim/plug.vim
 call plug#begin('/etc/vim/plug')
+Plug 'tabnine/YouCompleteMe'
 Plug 'jacoborus/tender.vim'
 Plug 'yegappan/mru'        " 最近打开过的文件
 Plug 'tomtom/tcomment_vim' " 批量注释
@@ -21,7 +22,6 @@ Plug 'ekalinin/Dockerfile.vim'
 Plug 'cespare/vim-toml',{'for':'toml'}
 Plug 'ctrlpvim/ctrlp.vim'                  " 根据文件名和文件内容模糊搜索并打开文件
 Plug 'dart-lang/dart-vim-plugin'
-Plug 'codota/tabnine-vim'
 Plug 'dyng/ctrlsf.vim'                           " 快速打开文件
 Plug 'ervandew/supertab'                         " supertab 补全
 Plug 'gkz/vim-ls',{'for':'ls'} " live script 语法高亮
