@@ -5,7 +5,6 @@ Plug 'jacoborus/tender.vim'
 Plug 'yegappan/mru'        " 最近打开过的文件
 Plug 'tomtom/tcomment_vim' " 批量注释
 Plug 'ollykel/v-vim'
-Plug 'evanleck/vim-svelte'
 Plug 'alaviss/nim.nvim'
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/async.vim'
@@ -44,6 +43,7 @@ Plug 'vim-scripts/taglist.vim'        " 显示Tag
 Plug 'w0rp/ale'                       " 异步语法检查
 call plug#end()
 
+let g:svelte_preprocessors = ['pug','coffee','stylus']
 
 set undodir=$HOME/.cache/nvim/undo
 set noswapfile
@@ -52,6 +52,7 @@ set undofile
 au BufRead,BufNewFile *.styl set filetype=stylus
 au BufRead,BufNewFile *.pug set filetype=pug
 au BufRead,BufNewFile *.coffee set filetype=coffee
+au BufRead,BufNewFile *.svelte set filetype=vue
 
 filetype plugin indent on
 syntax enable
@@ -211,6 +212,7 @@ func FormartSrc()
     exec "e! %"
 endfunc
 "结束定义FormartSrc
+autocmd BufWritePre *.styl :call FormartSrc()
 
 let g:rainbow_active = 1    "彩虹括号
 
@@ -370,7 +372,6 @@ nmap mr :MRU<cr>
 "nmap pe :lprev<cr>
 
 
-autocmd BufWritePre *.styl :call FormartSrc()
 
 
 autocmd BufWritePre *.py :%s/^\(\s*print\)\s\+\(.*\)/\1(\2)/e
