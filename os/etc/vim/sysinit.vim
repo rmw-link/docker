@@ -5,6 +5,7 @@ Plug 'jacoborus/tender.vim'
 Plug 'yegappan/mru'        " 最近打开过的文件
 Plug 'tomtom/tcomment_vim' " 批量注释
 Plug 'ollykel/v-vim'
+Plug 'evanleck/vim-svelte'
 Plug 'alaviss/nim.nvim'
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/async.vim'
