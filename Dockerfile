@@ -98,7 +98,7 @@ COPY os/etc/vim /etc/vim
 RUN \
 curl -fLo /etc/vim/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim &&\
 vi -E -s -u /etc/vim/sysinit.vim +PlugInstall +qa &&\
-vi +'CocInstall -sync coc-json coc-yaml coc-css coc-python coc-vetur coc-tabnine' +qa
+vi +'CocInstall -sync coc-json coc-yaml coc-css coc-python coc-vetur coc-tabnine coc-svelte' +qa
 
 WORKDIR /
 COPY os .
