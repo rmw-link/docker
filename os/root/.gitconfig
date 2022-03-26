@@ -1,6 +1,6 @@
 [user]
-name = null
-email = null@rmw.link
+name = any
+email = any@rmw.link
 
 [core]
 quotepath = false
@@ -44,3 +44,6 @@ commit = yellow bold
 old = red bold
 new = green bold
 whitespace = red reverse
+
+[init]
+defaultBranch = master
