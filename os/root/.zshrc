@@ -4,11 +4,9 @@
 
 source ~/.zinit.zsh
 
-autoload -Uz compinit
-compinit
+autoload -Uz compinit && compinit -u
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 setopt extended_glob
 
 #source ~/.gitstatus/gitstatus.prompt.zsh
-
