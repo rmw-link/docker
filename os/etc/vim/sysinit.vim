@@ -33,7 +33,7 @@ Plug 'iloginow/vim-stylus'
 Plug 'keith/swift.vim',{'for':'swift'}
 Plug 'meatballs/vim-xonsh'
 Plug 'luochen1990/rainbow'                       " 彩虹括号，匹配的括号显示为同一颜色
-Plug 'maksimr/vim-jsbeautify',{'for':'js'}
+"Plug 'maksimr/vim-jsbeautify',{'for':'js'}
 Plug 'scrooloose/nerdtree'                       " 文件浏览
 "  Plug 'urwork/ack.vim'                            " ag插件
 Plug 'urwork/vim-indent-guides'
@@ -118,7 +118,7 @@ let g:ale_linters = {
 \}
 let g:ale_fixers = {
 \   'python': ['yapf'],
-\   'javascript': ['prettier'],
+\   'javascript': ['rome format'],
 \}
 
 let g:formatters_pug= ['prettier']
@@ -412,7 +412,7 @@ vnoremap <Tab>= :Tab /=<CR>
 vnoremap <c-f> y<ESC>/<c-r>"<CR>
 
 set backspace=2
-vnoremap <Tab> :'<,'>TComment <CR>
+vnoremap <Backspace> :'<,'>TComment <CR>
 
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 
