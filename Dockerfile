@@ -82,7 +82,8 @@ asdf plugin-add golang https://github.com/kennyp/asdf-golang.git &&\
 asdf install golang latest &&\
 asdf global golang latest &&\
 asdf reshim &&\
-go install github.com/muesli/duf@master
+go install github.com/muesli/duf@master &&\
+go install github.com/louisun/heyspace
 
 COPY os/root /root
 
