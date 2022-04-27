@@ -23,7 +23,7 @@ locale-gen zh_CN.UTF-8 &&\
 rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* &&\
 passwd -d root &&\
 chsh -s /bin/zsh root &&\
-pip3 install glances yapf pylint supervisor python-language-server &&\
+pip3 install glances black pylint supervisor python-language-server &&\
 add-apt-repository -y ppa:neovim-ppa/unstable &&\
 apt-get update &&\
 apt-get install -y neovim &&\

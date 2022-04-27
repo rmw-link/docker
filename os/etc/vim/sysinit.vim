@@ -117,7 +117,7 @@ let g:ale_linters = {
 \  'python': ['flake8'],
 \}
 let g:ale_fixers = {
-\   'python': ['yapf'],
+\   'python': ['black'],
 \   'javascript': ['rome format'],
 \}
 
