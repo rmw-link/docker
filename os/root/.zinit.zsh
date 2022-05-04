@@ -15,8 +15,18 @@ fi
 zinit ice depth=1
 zinit light romkatv/powerlevel10k
 
-zinit ice wait lucid
-zinit load ellie/atuin
+#zinit ice wait lucid
+#export ATUIN_NOBIND="true"
+#zinit load ellie/atuin
+
+#zle -N _atuinr_widget _atuinr
+#
+#_atuinr() {
+#    atuin history list --cmd-only | fzf
+#}
+#bindkey '^r' _atuinr_widget
+#bindkey '^[[A' _atuinr_widget
+
 
 zinit ice wait lucid
 zinit light skywind3000/z.lua
@@ -35,12 +45,13 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#aaaaaa,bg=black"
 zinit ice wait lucid atload'_zsh_autosuggest_start'
 zinit light zsh-users/zsh-autosuggestions
 
-#HISTFILE=~/.zsh_history
-#HISTSIZE=10000
-#SAVEHIST=10000
-#setopt SHARE_HISTORY
-#zinit ice wait lucid
-#zinit light zdharma-continuum/history-search-multi-word
+HISTFILE=~/.zsh_history
+HISTSIZE=10000
+SAVEHIST=10000
+setopt SHARE_HISTORY
+zinit ice wait lucid
+zinit light zdharma-continuum/history-search-multi-word
+
 #zinit ice wait'1' lucid
 #zinit load romkatv/gitstatus
 
