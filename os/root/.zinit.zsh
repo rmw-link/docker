@@ -15,10 +15,8 @@ fi
 zinit ice depth=1
 zinit light romkatv/powerlevel10k
 
-HISTFILE=~/.zsh_history
-HISTSIZE=10000
-SAVEHIST=10000
-setopt SHARE_HISTORY
+zinit ice wait lucid
+zinit load ellie/atuin
 
 zinit ice wait lucid
 zinit light skywind3000/z.lua
@@ -37,9 +35,12 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#aaaaaa,bg=black"
 zinit ice wait lucid atload'_zsh_autosuggest_start'
 zinit light zsh-users/zsh-autosuggestions
 
-zinit ice wait lucid
-zinit light zdharma-continuum/history-search-multi-word
-
+#HISTFILE=~/.zsh_history
+#HISTSIZE=10000
+#SAVEHIST=10000
+#setopt SHARE_HISTORY
+#zinit ice wait lucid
+#zinit light zdharma-continuum/history-search-multi-word
 #zinit ice wait'1' lucid
 #zinit load romkatv/gitstatus
 

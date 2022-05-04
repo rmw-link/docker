@@ -40,7 +40,7 @@ curl https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path &&\
 cd $CARGO_HOME &&\
 ln -s ~/.cargo/config . &&\
 source $CARGO_HOME/env &&\
-cargo install ripgrep cargo-cache exa sd fd-find tokei diskus --root /usr/local &&\
+cargo install ripgrep atuin cargo-cache exa sd fd-find tokei diskus --root /usr/local &&\
 cargo-cache --remove-dir git-repos,registry-sources &&\
 cargo-cache -e &&\
 echo 'PATH=/opt/rust/bin:$PATH' >> /etc/profile.d/path.sh &&\
