@@ -1,46 +1,50 @@
 " 安装 vi +PlugInstall +qall
+" 升级 vi +PlugUpdate +qall
+
 source /etc/vim/plug.vim
+
 call plug#begin('/etc/vim/plug')
-Plug 'jacoborus/tender.vim'
 Plug 'yegappan/mru'        " 最近打开过的文件
+Plug 'vim-autoformat/vim-autoformat'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc-vetur'
+Plug 'neoclide/coc-tabnine'
+Plug 'jacoborus/tender.vim' " A 24bit colorscheme for Vim, Airline and Lightline
 Plug 'tomtom/tcomment_vim' " 批量注释
-Plug 'ollykel/v-vim'
-Plug 'alaviss/nim.nvim'
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'prabirshrestha/async.vim'
-Plug 'prabirshrestha/vim-lsp'
-Plug 'prabirshrestha/asyncomplete-lsp.vim'
 Plug 'ziglang/zig.vim'
 Plug 'direnv/direnv.vim'
 Plug 'rust-lang/rust.vim'
 Plug 'Shougo/deoplete.nvim'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'neoclide/coc-vetur'
-Plug 'vim-autoformat/vim-autoformat'
 Plug 'ekalinin/Dockerfile.vim'
 Plug 'cespare/vim-toml',{'for':'toml'}
 Plug 'ctrlpvim/ctrlp.vim'                  " 根据文件名和文件内容模糊搜索并打开文件
 Plug 'dart-lang/dart-vim-plugin'
 Plug 'dyng/ctrlsf.vim'                           " 快速打开文件
-Plug 'ervandew/supertab'                         " supertab 补全
-Plug 'gkz/vim-ls',{'for':'ls'} " live script 语法高亮
-Plug 'digitaltoad/vim-pug',{'for':['pug','vue']}
-Plug 'posva/vim-vue',{'for':['vue','styl','stylus','pug']}
-Plug 'kchmck/vim-coffee-script',{'for':['coffee','vue']} " Coffee-script语法高亮
+Plug 'digitaltoad/vim-pug',{'for':['pug','vue','svelte']}
+Plug 'posva/vim-vue',{'for':['vue','styl','stylus','pug','svelte']}
+Plug 'kchmck/vim-coffee-script',{'for':['coffee','vue','svelte']} " Coffee-script语法高亮
 Plug 'godlygeek/tabular'                         " 自动对齐
 Plug 'haya14busa/vim-gtrans',{'for':'markdown'}
 Plug 'iloginow/vim-stylus'
 Plug 'keith/swift.vim',{'for':'swift'}
 Plug 'meatballs/vim-xonsh'
 Plug 'luochen1990/rainbow'                       " 彩虹括号，匹配的括号显示为同一颜色
-"Plug 'maksimr/vim-jsbeautify',{'for':'js'}
 Plug 'scrooloose/nerdtree'                       " 文件浏览
-"  Plug 'urwork/ack.vim'                            " ag插件
 Plug 'urwork/vim-indent-guides'
 Plug 'vim-scripts/ctags.vim'                     " 生成Tag，跟TagList搭配
 Plug 'vim-scripts/mako.vim',{'for':'mako'}     " mako语法高亮
 Plug 'vim-scripts/taglist.vim'        " 显示Tag
 Plug 'w0rp/ale'                       " 异步语法检查
+"Plug 'prabirshrestha/asyncomplete.vim'
+"Plug 'prabirshrestha/async.vim'
+"Plug 'prabirshrestha/vim-lsp'
+"Plug 'prabirshrestha/asyncomplete-lsp.vim'
+"Plug 'ervandew/supertab'                         " supertab 补全
+"Plug 'ollykel/v-vim'
+"Plug 'alaviss/nim.nvim'
+"  Plug 'urwork/ack.vim'                            " ag插件
+"Plug 'NoahTheDuke/vim-just'
+"Plug 'gkz/vim-ls',{'for':'ls'} " live script 语法高亮
 call plug#end()
 
 let g:svelte_preprocessors = ['pug','coffee','stylus']
@@ -113,17 +117,17 @@ autocmd FileType rust set commentstring=//\ %s
 " ESLint.
 let g:ale_linters = {
 \  'go': ['gometalinter', 'gofmt'],
-"\  'javascript': ['eslint'],
 \  'python': ['flake8'],
-\}
-let g:ale_fixers = {
-\   'python': ['black'],
-\   'javascript': ['rome format'],
+"\  'javascript': ['eslint'],
 \}
 
-let g:formatters_pug= ['prettier']
+let g:formatters_javascript= ['prettier']
+
+"let g:javascriptfmt_autosave = 1
+
+"let g:formatters_pug= ['prettier']
 " yarn global add prettier prettier-plugin-toml && asdf reshim
-let g:formatters_toml= ['prettier']
+"let g:formatters_toml= ['prettier']
 
 let g:formatdef_gopfmt = '"gop fmt"'
 let g:formatters_go= ['gopfmt']
@@ -378,7 +382,7 @@ nmap mr :MRU<cr>
 autocmd BufWritePre *.py :%s/^\(\s*print\)\s\+\(.*\)/\1(\2)/e
 autocmd BufWritePre *.{md,vue,ls,cpp,c,d,rs,slm,py,coffee,conf,html,sh,scss,css,js,pug,xsh,styl} :%s/\t/  /ge
 autocmd BufWritePre *.{toml,zsh,txt,cpp,c,d,rs,slm,py,coffee,conf,html,sh,scss,css,js,vue,sass,pug,xsh,styl} :%s/\s\+$//e
-au BufWritePre *.{h,cpp,c,v,py,proto,json,go,js,html,scss,css,pug,dart,toml,rs} :Autoformat
+au BufWritePre *.{h,cpp,c,v,py,proto,json,go,js,html,scss,css,pug,dart,toml,rs,mjs} :Autoformat
 autocmd FileType vue syntax sync fromstart
 autocmd BufWritePre *.vue :syntax sync fromstart
 autocmd BufWritePost *.{md} :silent! !heyspace -i % -b /tmp -q
@@ -556,17 +560,27 @@ let g:rainbow_conf = {
 \	'guifgs': ['#00dd00','#dddd00','#00dddd','#9999cc','#cc9999','#99cc99'],
 \}
 
-au User asyncomplete_setup call asyncomplete#register_source({
-\ 'name': 'nim',
-\ 'whitelist': ['nim'],
-\ 'completor': {opt, ctx -> nim#suggest#sug#GetAllCandidates({start, candidates -> asyncomplete#complete(opt['name'], ctx, start, candidates)})}
-\ })
+set wildmode=longest,list,full
+set wildmenu
+inoremap <expr> <cr> coc#pum#visible() ? coc#_select_confirm() : "\<CR>"
 
-let g:ale_fixers = {
-\   'nim':      ['nimpretty'],
-\   '*':        ['remove_trailing_lines', 'trim_whitespace'],
-\}
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
 
-let g:ale_linters = {
-\   'nim':      ['nimlsp', 'nimcheck'],
-\}
+" Insert <tab> when previous text is space, refresh completion if not.
+inoremap <silent><expr> <TAB>
+\ coc#pum#visible() ? coc#pum#next(1):
+\ <SID>check_back_space() ? "\<Tab>" :
+\ coc#refresh()
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+
+set signcolumn=yes
+set updatetime=300
+set nobackup
+set nowritebackup
+
+let g:coc_node_path = trim(system('which node'))
+
+
