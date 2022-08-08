@@ -5,7 +5,6 @@ source /etc/vim/plug.vim
 
 call plug#begin('/etc/vim/plug')
 Plug 'yegappan/mru'        " 最近打开过的文件
-Plug 'vim-autoformat/vim-autoformat'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'neoclide/coc-vetur'
 Plug 'neoclide/coc-tabnine'
@@ -20,6 +19,7 @@ Plug 'cespare/vim-toml',{'for':'toml'}
 Plug 'ctrlpvim/ctrlp.vim'                  " 根据文件名和文件内容模糊搜索并打开文件
 Plug 'dart-lang/dart-vim-plugin'
 Plug 'dyng/ctrlsf.vim'                           " 快速打开文件
+Plug 'vim-autoformat/vim-autoformat'
 Plug 'digitaltoad/vim-pug',{'for':['pug','vue','svelte']}
 Plug 'posva/vim-vue',{'for':['vue','styl','stylus','pug','svelte']}
 Plug 'kchmck/vim-coffee-script',{'for':['coffee','vue','svelte']} " Coffee-script语法高亮
@@ -35,6 +35,7 @@ Plug 'vim-scripts/ctags.vim'                     " 生成Tag，跟TagList搭配
 Plug 'vim-scripts/mako.vim',{'for':'mako'}     " mako语法高亮
 Plug 'vim-scripts/taglist.vim'        " 显示Tag
 Plug 'w0rp/ale'                       " 异步语法检查
+
 "Plug 'prabirshrestha/asyncomplete.vim'
 "Plug 'prabirshrestha/async.vim'
 "Plug 'prabirshrestha/vim-lsp'
@@ -121,11 +122,8 @@ let g:ale_linters = {
 "\  'javascript': ['eslint'],
 \}
 
-let g:formatters_javascript= ['prettier']
 
-"let g:javascriptfmt_autosave = 1
-
-"let g:formatters_pug= ['prettier']
+let g:formatters_pug= ['prettier']
 " yarn global add prettier prettier-plugin-toml && asdf reshim
 "let g:formatters_toml= ['prettier']
 
@@ -380,15 +378,18 @@ nmap mr :MRU<cr>
 
 
 autocmd BufWritePre *.py :%s/^\(\s*print\)\s\+\(.*\)/\1(\2)/e
-autocmd BufWritePre *.{md,vue,ls,cpp,c,d,rs,slm,py,coffee,conf,html,sh,scss,css,js,pug,xsh,styl} :%s/\t/  /ge
-autocmd BufWritePre *.{toml,zsh,txt,cpp,c,d,rs,slm,py,coffee,conf,html,sh,scss,css,js,vue,sass,pug,xsh,styl} :%s/\s\+$//e
-au BufWritePre *.{h,cpp,c,v,py,proto,json,go,js,html,scss,css,pug,dart,toml,rs,mjs} :Autoformat
+autocmd BufWritePre *.{md,vue,ls,cpp,c,d,rs,slm,py,coffee,conf,html,sh,scss,css,pug,xsh,styl} :%s/\t/  /ge
+autocmd BufWritePre *.{toml,zsh,txt,cpp,c,d,rs,slm,py,coffee,conf,html,sh,scss,css,vue,sass,pug,xsh,styl} :%s/\s\+$//e
+au BufWritePre *.{h,cpp,c,v,py,proto,json,go,html,scss,css,dart,toml,rs} :Autoformat
 autocmd FileType vue syntax sync fromstart
 autocmd BufWritePre *.vue :syntax sync fromstart
 autocmd BufWritePost *.{md} :silent! !heyspace -i % -b /tmp -q
 autocmd BufWritePost *.{md} :edit
 autocmd BufWritePost *.{md} :redraw!
 
+autocmd BufWritePost *.{js,mjs} :silent! !rome format --write %
+autocmd BufWritePost *.{js,mjs} :edit
+autocmd BufWritePost *.{js,mjs} :redraw!
 
 let g:syntastic_swift_checkers = ['swiftpm', 'swiftlint']
 let g:vue_pre_processors = ['pug','coffee','stylus','styl']
