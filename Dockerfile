@@ -72,7 +72,7 @@ pip3 install ipython xonsh virtualenv pynvim &&\
 asdf plugin add nodejs &&\
 asdf install nodejs latest &&\
 asdf global nodejs latest &&\
-npm install -g pnpm rome@next @antfu/ni yarn && asdf reshim &&\
+npm install -g pnpm rome@next @antfu/ni prettier @prettier/plugin-pug stylus-supremacy yarn && asdf reshim &&\
 asdf reshim &&\
 yarn config set registry https://registry.npm.taobao.org &&\
 yarn config set prefix ~/.yarn &&\
