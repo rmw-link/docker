@@ -378,8 +378,8 @@ nmap mr :MRU<cr>
 
 
 autocmd BufWritePre *.py :%s/^\(\s*print\)\s\+\(.*\)/\1(\2)/e
-autocmd BufWritePre *.{md,vue,ls,cpp,c,d,rs,slm,py,coffee,conf,html,sh,scss,css,pug,xsh,styl} :%s/\t/  /ge
-autocmd BufWritePre *.{toml,zsh,txt,cpp,c,d,rs,slm,py,coffee,conf,html,sh,scss,css,vue,sass,pug,xsh,styl} :%s/\s\+$//e
+autocmd BufWritePre *.{md,vue,ls,cpp,c,d,rs,slm,py,coffee,conf,html,sh,scss,css,xsh,styl} :%s/\t/  /ge
+autocmd BufWritePre *.{toml,zsh,txt,cpp,c,d,rs,slm,py,coffee,conf,html,sh,scss,css,vue,sass,xsh,styl} :%s/\s\+$//e
 au BufWritePre *.{h,cpp,c,v,py,proto,json,go,html,scss,css,dart,toml,rs,pug} :Autoformat
 autocmd FileType vue syntax sync fromstart
 autocmd BufWritePre *.vue :syntax sync fromstart
