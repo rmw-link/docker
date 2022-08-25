@@ -2,11 +2,18 @@
 
 MSG=$1
 
+branch=`git branch|awk '{print $2}'`
+
+git pull
+if [ $branch != "main" ]; then
+git pull main
+fi
+
 if [ -z "$MSG" ];then
   MSG='首先，要有光'
 fi
 
-git checkout --orphan newBranch
+git checkout --orphan resetBranch
 git add -A  # Add all files and commit them
 git commit -m "$MSG"
 git branch -D master  # Deletes the master branch

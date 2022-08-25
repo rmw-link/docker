@@ -1,12 +1,12 @@
 #!/usr/bin/env coffee
 
-import 'zx/globals'
-import thisdir from '@rmw/thisdir'
+> zx/globals:
+  @rmw/thisdir
 
 ROOT = thisdir(import.meta)
 cd ROOT
 
-export default main = =>
+< main = =>
   await $'ls'
   await $'pwd'
 
